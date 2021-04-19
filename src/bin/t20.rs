@@ -39,9 +39,74 @@
 // 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
 fn main() {
-
+    let s = "()";
+    assert!(is_valid(s.to_string()));
+    let s = "()[]{}";
+    assert!(is_valid(s.to_string()));
+    let s = "(]";
+    assert!(!is_valid(s.to_string()));
+    let s = "([)]";
+    assert!(!is_valid(s.to_string()));
+    let s = "{[]}";
+    assert!(is_valid(s.to_string()));
 }
 
-pub fn is_valid(s: String) -> bool {
+// pub fn is_valid(s: String) -> bool {
+//     fn is_pair(c_r: char, c_l: char) -> bool {
+//         match c_r {
+//             ')' => c_l == '(',
+//             ']' => c_l == '[',
+//             '}' => c_l == '{',
+//             _ => false
+//         }
+//     }
+//     let mut v: Vec<char> = Vec::new();
+//     for c in s.chars() {
+//         match c {
+//             ')' | ']' | '}' => {
+//                 match v.pop() {
+//                     None => return false,
+//                     Some(pop) if !is_pair(c, pop) => return false,
+//                     _ => {}
+//                 }
+//
+//             }
+//             _ => v.push(c)
+//         }
+//     }
+//     v.is_empty()
+// }
 
+// pub fn is_valid(s: String) -> bool {
+//     let mut v: Vec<char> = Vec::new();
+//     for c in s.chars() {
+//         match c {
+//             ')' | ']' | '}' => {
+//                 match v.pop() {
+//                     None => return false,
+//                     Some(pop_value) => {
+//                         if (c == ')' && pop_value != '(') || (c == ']' && pop_value != '[') || (c == '}' && pop_value != '{') {
+//                             return false;
+//                         }
+//                     }
+//                 }
+//             }
+//             _ => v.push(c)
+//         }
+//     }
+//     v.is_empty()
+// }
+
+pub fn is_valid(s: String) -> bool {
+    let mut v: Vec<char> = Vec::new();
+    for c in s.chars() {
+        match c {
+            '(' | '[' | '{' => v.push(c),
+            ')' if v.pop().eq(&Some('(')) =>  {}
+            ']' if v.pop().eq(&Some('[')) =>  {}
+            '}' if v.pop().eq(&Some('{')) =>  {}
+            _ => return false,
+        }
+    }
+    v.is_empty()
 }
